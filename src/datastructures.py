@@ -41,25 +41,23 @@ class FamilyStructure:
 
     def add_member(self, member):
         if 'id' not in member:
-            member['id']= self._generate_id
+            member['id']= self._generate_id()
         if 'last-name' not in member:
             member['last_name'] = self.last_name
-        self.members.append(member)
+        self._members.append(member)
 
     def delete_member(self, id):
-        new_list=[]
-        for i in self.members:
-            if i['id'] != id:
-                new_list.append(i)
-        return new_list
+        for i, member in enumerate(self._members):
+            if member["id"] == id:
+                del self._members[i]
+                return True
+        return False
 
     def get_member(self, id):
-        member = None
-        for i in self.members:
-            if i['id']== id:
-                member = i
-                break
-        return member
+        for member in self._members:
+            if member["id"] == id:
+                return member
+        return None
 
     # This method is done, it returns a list with all the family members
     def get_all_members(self):

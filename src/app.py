@@ -34,16 +34,16 @@ def handle_get_all_members():
     return jsonify(jackson_family.get_all_members()), 200
 
 
-@app.route('/member/<int:member_id>', methods=['GET'])
-def handle_get_member(member_id):
-    member= jackson_family.get_member(member_id)
+@app.route('/members/<int:id>', methods=['GET'])
+def handle_get_member(id):
+    member= jackson_family.get_member(id)
     if member:
         return jsonify(member), 200
     else:
         return jsonify({"error": "Miembro no encontrado"}), 404
     
 
-@app.route('/member', methods=['POST'])
+@app.route('/members', methods=['POST'])
 def handle_add_member():
     member_data= request.get_json()
     if not member_data or "first_name" not in member_data or "age" not in member_data or "lucky_numbers" not in member_data:
@@ -52,12 +52,11 @@ def handle_add_member():
     return jsonify({"message": "Miembro agregado"}), 200
 
 
-@app.route('/member/<int:member_id>', methods=['DELETE'])
-def handle_delete_member(member_id):
-    member = jackson_family.get_member(member_id)
-    if not member:
+@app.route('/members/<int:id>', methods=['DELETE'])
+def handle_delete_member(id):
+    was_deleted = jackson_family.delete_member(id)
+    if not was_deleted:
         return jsonify({"error": "Miembro no encontrado"}), 404
-    jackson_family.delete_member(member_id)
     return jsonify({"done": True}), 200
 
 
